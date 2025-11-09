@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const App = () => {
   const [message, setMessage] = useState<string[]>([])
@@ -22,11 +22,11 @@ const App = () => {
     return () => Socket.close()
   }, [])
 
-  return <div style={{justifyContent: "center", alignItems: "center"}}>
-    <div style={{display: "flex", justifyContent: "center"}}>
+  return <div className="flex justify-center items-center h-screen">
+    <div>
       {message}
     </div>
-    <input type="text" ref={Ref1} placeholder="Message....." />
+    <input type="text" className="bg-black text-white" ref={Ref1} placeholder="Message....." />
     <button onClick={SendMessage}>Send</button>
   </div>
 }
