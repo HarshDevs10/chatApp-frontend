@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 
 const App = () => {
-  const [ws, setWs] = useState<WebSocket>();
+  const wsRef = useRef<WebSocket | null>(null);
   const [message, setMessage] = useState<string[]>(["hi"]);
   const Ref1 = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const web = new WebSocket("ws://localhost:8000")
-    setWs(web)
+    wsRef.current = web;
 
     web.onmessage = (e) => {
       console.log(e.data)
@@ -22,7 +22,7 @@ const App = () => {
     if (!Ref1.current) return;
     const message = Ref1.current.value
 
-    ws?.send(JSON.stringify({
+    wsRef.current?.send(JSON.stringify({
       type: "chat",
       payload: {
         message: message
