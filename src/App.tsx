@@ -14,6 +14,15 @@ const App = () => {
       setMessage(prev => [...prev, e.data])
     }
 
+    web.onopen = () => {
+      web.send(JSON.stringify({
+        type: "join",
+        payload: {
+          roomId: "123"
+        }
+      }))
+    }
+
     return () => web.close()
   }, [])
 
