@@ -1,27 +1,34 @@
 import { useEffect, useRef, useState } from "react"
 
 const App = () => {
-  const [message, setMessage] = useState<string[]>(["hello world", "singh"])
-  const [ws, setWs] = useState<WebSocket>()
-  const Ref1 = useRef(null)
+  const [ws, setWs] = useState<WebSocket>();
+  const [message, setMessage] = useState<string[]>(["hi"]);
+  const Ref1 = useRef<HTMLInputElement>(null);
 
-  const SendMessage = () => {
-    if(!Ref1.current) return
-    //@ts-ignore
-    ws?.send(Ref1.current.value)
-  } 
-  
   useEffect(() => {
-    const Socket = new WebSocket("ws://localhost:8000")
-    setWs(Socket)
+    const web = new WebSocket("ws://localhost:8000")
+    setWs(web)
 
-    Socket.onmessage = (e) => {
+    web.onmessage = (e) => {
       console.log(e.data)
       setMessage(prev => [...prev, e.data])
     }
 
-    return () => Socket.close()
+    return () => web.close()
   }, [])
+
+  const SendMessage = () => {
+    
+    if (!Ref1.current) return;
+    const message = Ref1.current.value
+
+    ws?.send(JSON.stringify({
+      type: "chat",
+      payload: {
+        message: message
+      }
+    }))
+  }
 
   return <div className="flex flex-col w-96 h-screen bg-amber-800 justify-center items-center">
     <div className="">
